@@ -82,8 +82,18 @@ public class MessageService {
     @GET
     @Produces("application/json")
     @Path("{startDate}/{endDate}")
-    public String getDateByRange(@PathParam("from") @PathParam("to") Date from, Date to) {
-        return "";
+    public String getDateByRange(@PathParam("from") Date from, @PathParam("to") Date to) {
+        List<Message> msgCtrl = new MessageController().getMessageByDate(from, to);
+        JsonArrayBuilder json = Json.createArrayBuilder();
+            for(Message message : newMsgCtrl.getAllMessages()){
+                json.add(Json.createObjectBuilder()
+                        .add("id", message.getId())
+                        .add("title", message.getTitle())
+                        .add("contents", message.getContents())
+                        .add("author", message.getAuthor())
+                        .add("senttime", message.getDateString()));
+            }
+        return json.build().toString();
     }
 
     /**
@@ -94,14 +104,29 @@ public class MessageService {
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public String putJson(@PathParam("id") int id) {
-        return "";
+    public String putJson(@PathParam("id") int id, JsonObject json) {
+        Message msg = new Message();
+        msg.setTitle(json.getString("title"));
+        msg.setAuthor(json.getString("author"));
+        msg.setContents(json.getString("contents"));
+        msg.setSenttime(new Date());
+        
+        newMsgCtrl.edit(msg);
+        return "200 OK";
     }
     
     @POST
     @Consumes("application/json")
-    public JsonArray postJson(JsonArray json){
-        return json;
+    public String postJson(JsonObject json){
+        Message msg = new Message();
+        msg.setTitle(json.getString("title"));
+        msg.setAuthor(json.getString("author"));
+        msg.setContents(json.getString("contents"));
+        msg.setSenttime(new Date());
+        
+        newMsgCtrl.add(msg);
+        
+        return "200 OK";
     }
     
     @DELETE
