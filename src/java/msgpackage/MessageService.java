@@ -68,7 +68,8 @@ public class MessageService {
     @Produces("application/json")
     @Path("{id}")
     public Response getById(@PathParam("id")int id) {
-        return Response.ok(newMsgCtrl.getMessageById()).build();
+        newMsgCtrl.getMessageById(id);
+        return Response.ok(newMsgCtrl).build();
     }
     
     @GET
