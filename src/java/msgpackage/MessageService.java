@@ -50,7 +50,7 @@ public class MessageService {
      */
     @GET
     @Produces("application/json")
-    public Response getAll() {
+    public String getAll() {
         List<Message> msgCtrl = new MessageController().getAllMessages();
         JsonArrayBuilder json = Json.createArrayBuilder();
             for(Message message : newMsgCtrl.getAllMessages()){
@@ -61,22 +61,29 @@ public class MessageService {
                         .add("author", message.getAuthor())
                         .add("senttime", message.getDateString()));
             }
-        return Response.ok(msgCtrl).build();
+        return json.build().toString();
     }
     
     @GET
     @Produces("application/json")
     @Path("{id}")
-    public Response getById(@PathParam("id")int id) {
-        newMsgCtrl.getMessageById(id);
-        return Response.ok(newMsgCtrl).build();
+    public String getById(@PathParam("id")int id) {
+        Message msg = newMsgCtrl.getMessageById(id);
+        JsonArrayBuilder json = Json.createArrayBuilder();
+                json.add(Json.createObjectBuilder()
+                        .add("id", msg.getId())
+                        .add("title", msg.getTitle())
+                        .add("contents", msg.getContents())
+                        .add("author", msg.getAuthor())
+                        .add("senttime", msg.getDateString()));
+                return json.build().toString();
     }
     
     @GET
     @Produces("application/json")
     @Path("{startDate}/{endDate}")
-    public Message getDateByRange(Date from, Date to) {
-        return newMsgCtrl.getMessageByDate(from, to);
+    public String getDateByRange(@PathParam("from") @PathParam("to") Date from, Date to) {
+        return "";
     }
 
     /**
