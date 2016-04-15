@@ -110,6 +110,7 @@ public class MessageService {
         msg.setAuthor(json.getString("author"));
         msg.setContents(json.getString("contents"));
         msg.setSenttime(new Date());
+        msg.setId(id);
         
         newMsgCtrl.edit(msg);
         return "200 OK";
@@ -132,6 +133,7 @@ public class MessageService {
     @DELETE
     @Path("{id}")
     public String deleteJson(@PathParam("id") int id){
+        newMsgCtrl.remove(id);
         return "200 OK";
     }
 }
