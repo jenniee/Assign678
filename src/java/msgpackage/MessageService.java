@@ -7,6 +7,7 @@ package msgpackage;
 
 import java.io.StringReader;
 import java.util.Date;
+import java.util.List;
 import javax.faces.bean.ApplicationScoped;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -22,6 +23,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -48,8 +50,8 @@ public class MessageService {
      */
     @GET
     @Produces("application/json")
-    @Path("messages")
-    public JsonArray getAll() {
+    public Response getAll() {
+        List<Message> msgCtrl = new MessageController().getAllMessages();
         JsonArrayBuilder json = Json.createArrayBuilder();
             for(Message message : newMsgCtrl.getAllMessages()){
                 json.add(Json.createObjectBuilder()
@@ -59,14 +61,14 @@ public class MessageService {
                         .add("author", message.getAuthor())
                         .add("senttime", message.getDateString()));
             }
-        return json.build();
+        return Response.ok(msgCtrl).build();
     }
     
     @GET
     @Produces("application/json")
     @Path("{id}")
-    public Message getById(int id) {
-        return newMsgCtrl.getMessageById(id);
+    public Response getById(@PathParam("id")int id) {
+        return Response.ok(newMsgCtrl.getMessageById()).build();
     }
     
     @GET
