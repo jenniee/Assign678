@@ -12,14 +12,6 @@ and open the template in the editor.
     </head>
     <body>
         <div>
-            <script>
-                $.ajax({
-                    url: "v1/messages",
-                    method: "post",
-                    contentType: "application/json; charset=UTF-8",
-                    data: $('#content').val()
-                });
-            </script>
             <form method="post">
                 <input id="content" name="content"/>
                 <button type="submit">Send</button>
