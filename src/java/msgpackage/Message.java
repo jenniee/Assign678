@@ -22,6 +22,10 @@ public class Message {
     private String contents;
     private String author;
     private Date senttime;
+    
+    public Message(){
+        
+    }
 
     public int getId() {
         return id;

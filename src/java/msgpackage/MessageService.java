@@ -51,17 +51,7 @@ public class MessageService {
     @GET
     @Produces("application/json")
     public String getAll() {
-        List<Message> msgCtrl = new MessageController().getAllMessages();
-        JsonArrayBuilder json = Json.createArrayBuilder();
-            for(Message message : newMsgCtrl.getAllMessages()){
-                json.add(Json.createObjectBuilder()
-                        .add("id", message.getId())
-                        .add("title", message.getTitle())
-                        .add("contents", message.getContents())
-                        .add("author", message.getAuthor())
-                        .add("senttime", message.getDateString()));
-            }
-        return json.build().toString();
+        return newMsgCtrl.getAllMessages().toString();
     }
     
     @GET
@@ -83,17 +73,7 @@ public class MessageService {
     @Produces("application/json")
     @Path("{startDate}/{endDate}")
     public String getDateByRange(@PathParam("from") Date from, @PathParam("to") Date to) {
-        List<Message> msgCtrl = new MessageController().getMessageByDate(from, to);
-        JsonArrayBuilder json = Json.createArrayBuilder();
-            for(Message message : newMsgCtrl.getAllMessages()){
-                json.add(Json.createObjectBuilder()
-                        .add("id", message.getId())
-                        .add("title", message.getTitle())
-                        .add("contents", message.getContents())
-                        .add("author", message.getAuthor())
-                        .add("senttime", message.getDateString()));
-            }
-        return json.build().toString();
+        return newMsgCtrl.getMessageByDate(from, to).toString();
     }
 
     /**
@@ -123,7 +103,9 @@ public class MessageService {
         msg.setTitle(json.getString("title"));
         msg.setAuthor(json.getString("author"));
         msg.setContents(json.getString("contents"));
-        msg.setSenttime(new Date());
+        
+        java.util.Date dt = new java.util.Date();
+        msg.setSenttime(dt);
         
         newMsgCtrl.add(msg);
         
